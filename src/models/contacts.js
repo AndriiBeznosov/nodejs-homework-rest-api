@@ -50,7 +50,6 @@ const updateStatusContact = async (contactId, body) => {
     const contact = await Contacts.findByIdAndUpdate(contactId, body, {
       new: true,
     });
-    console.log(contact);
     return contact;
   } catch (error) {
     throw new HttpError("Not found", 404);
