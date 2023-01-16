@@ -49,9 +49,6 @@ async function refreshContact(req, res, _) {
     );
   }
   const { name, email, phone } = req.body;
-  if (!req.body) {
-    throw new HttpError("missing fields", 400);
-  }
   const contact = await updateContact(contactId, { name, email, phone });
 
   if (!contact) {
@@ -71,9 +68,6 @@ async function refreshContactStatus(req, res, _) {
     );
   }
   const { favorite } = req.body;
-  if (!favorite) {
-    throw new HttpError("missing field favorite", 400);
-  }
   const contact = await updateStatusContact(contactId, { favorite });
 
   if (!contact) {
