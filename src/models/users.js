@@ -63,9 +63,23 @@ async function currentUser(idUser) {
   return userUpdate;
 }
 
+async function updateUser(idUser, subscription) {
+  const userUpdate = await User.findByIdAndUpdate(
+    idUser,
+    { subscription },
+    { new: true },
+  );
+  if (!userUpdate) {
+    throw new HttpError(401, "Not authorized");
+  }
+
+  return userUpdate;
+}
+
 module.exports = {
   addUser,
   loginUser,
   logoutUser,
   currentUser,
+  updateUser,
 };

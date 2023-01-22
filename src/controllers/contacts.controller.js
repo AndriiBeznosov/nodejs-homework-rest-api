@@ -9,8 +9,16 @@ const {
 } = require("../models/contacts");
 
 async function getContacts(req, res, _) {
-  const { limit } = req.query;
-  const contact = await getContactsService({ limit });
+  const { limit, page } = req.query;
+  if (Object.keys(req.query).includes("favorite")) {
+    const contact = await getContactsService({
+      limit,
+      page,
+      favorite: req.query.favorite,
+    });
+    return res.status(200).json(contact);
+  }
+  const contact = await getContactsService({ limit, page });
   return res.status(200).json(contact);
 }
 

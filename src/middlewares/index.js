@@ -34,7 +34,7 @@ async function auth(req, res, next) {
     ) {
       return next(new HttpError("jwt token is not valid", 401));
     }
-    throw new HttpError("no token provider", 401);
+    return next(new HttpError("no token provider", 401));
   }
   next();
 }

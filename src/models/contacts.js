@@ -4,9 +4,14 @@ const { contactSchema } = require("../service/schemas/contactSchemas");
 const Contacts = mongoose.model("contacts", contactSchema);
 const { HttpError } = require("../httpError");
 
-const getContactsService = async ({ limit = 0 }) => {
+const getContactsService = async ({
+  limit = 0,
+  page = 0,
+  favorite = [true, false],
+}) => {
   try {
-    const contacts = await Contacts.find({}).limit(limit);
+    const skip = (page - 1) * limit;
+    const contacts = await Contacts.find({ favorite }).skip(skip).limit(limit);
     return contacts;
   } catch (error) {
     throw new HttpError("Not found", 404);

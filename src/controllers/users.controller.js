@@ -4,6 +4,7 @@ const {
   loginUser,
   logoutUser,
   currentUser,
+  updateUser,
 } = require("../models/users");
 
 async function signup(req, res, _) {
@@ -39,13 +40,31 @@ async function current(req, res, next) {
   }
 }
 
-async function logout(req, res, _) {
+async function logout(req, res, next) {
   try {
     const { _id: userId } = req.user;
     await logoutUser(userId);
     res.status(204).json({ status: "No Content" });
   } catch (error) {
-    throw new HttpError(error.code, error.message);
+    return next(new HttpError(error.code, error.message));
+  }
+}
+
+async function subscription(req, res, next) {
+  console.log(req.user);
+  try {
+    const { subscription } = req.body;
+    const { _id: userId } = req.user;
+    const userUpdate = await updateUser(userId, subscription);
+    res.status(201).json({
+      status: "Status update was successful",
+      user: {
+        email: userUpdate.email,
+        subscription: userUpdate.subscription,
+      },
+    });
+  } catch (error) {
+    return next(new HttpError(error.code, error.message));
   }
 }
 
@@ -54,4 +73,5 @@ module.exports = {
   login,
   logout,
   current,
+  subscription,
 };
