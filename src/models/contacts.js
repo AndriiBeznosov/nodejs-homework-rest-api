@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const { schema } = require("../service/schemas/contact");
-const Contacts = mongoose.model("contacts", schema);
+const { contactSchema } = require("../service/schemas/contactSchemas");
+
+const Contacts = mongoose.model("contacts", contactSchema);
 const { HttpError } = require("../httpError");
 
 const getContactsService = async ({ limit = 0 }) => {

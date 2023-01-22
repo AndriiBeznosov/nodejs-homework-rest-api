@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 
-const schema = new Schema(
+const contactSchema = new Schema(
   {
     name: {
       type: String,
@@ -17,10 +18,14 @@ const schema = new Schema(
       type: Boolean,
       default: false,
     },
+    owner: {
+      type: [mongoose.SchemaTypes.ObjectId],
+      ref: "user",
+    },
   },
   { versionKey: false, timestamps: true },
 );
 
 module.exports = {
-  schema,
+  contactSchema,
 };
