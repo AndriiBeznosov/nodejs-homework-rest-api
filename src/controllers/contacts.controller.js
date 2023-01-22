@@ -6,19 +6,14 @@ const {
   addContact,
   updateContact,
   updateStatusContact,
+  getStatusContacts,
 } = require("../models/contacts");
 
 async function getContacts(req, res, _) {
-  const { limit, page } = req.query;
-  if (Object.keys(req.query).includes("favorite")) {
-    const contact = await getContactsService({
-      limit,
-      page,
-      favorite: req.query.favorite,
-    });
-    return res.status(200).json(contact);
+  const contact = await getContactsService(req.query);
+  if (!contact) {
+    throw new HttpError("Not found", 404);
   }
-  const contact = await getContactsService({ limit, page });
   return res.status(200).json(contact);
 }
 
@@ -84,6 +79,16 @@ async function refreshContactStatus(req, res, _) {
   return res.status(200).json(contact);
 }
 
+async function getContactsStatus(req, res, _) {
+  const { limit, page, favorite } = req.query;
+  const contact = await getStatusContacts({
+    limit,
+    page,
+    favorite,
+  });
+  return res.status(200).json(contact);
+}
+
 module.exports = {
   getContacts,
   getContact,
@@ -91,4 +96,5 @@ module.exports = {
   deleteContact,
   refreshContact,
   refreshContactStatus,
+  getContactsStatus,
 };

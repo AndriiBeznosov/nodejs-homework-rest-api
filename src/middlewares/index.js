@@ -11,6 +11,17 @@ function validateBody(schema) {
     return next();
   };
 }
+function validateQuery(schema) {
+  return (req, _, next) => {
+    if (Object.keys(req.query).includes("favorite")) {
+      const { error } = schema.validate(req.query);
+      if (error) {
+        throw new HttpError(error.message, 400);
+      }
+    }
+    return next();
+  };
+}
 
 async function auth(req, res, next) {
   const authHeader = req.headers.authorization || "";
@@ -42,4 +53,5 @@ async function auth(req, res, next) {
 module.exports = {
   validateBody,
   auth,
+  validateQuery,
 };

@@ -44,14 +44,13 @@ async function logout(req, res, next) {
   try {
     const { _id: userId } = req.user;
     await logoutUser(userId);
-    res.status(204).json({ status: "No Content" });
+    res.status(200).json({ status: "No Content" });
   } catch (error) {
     return next(new HttpError(error.code, error.message));
   }
 }
 
 async function subscription(req, res, next) {
-  console.log(req.user);
   try {
     const { subscription } = req.body;
     const { _id: userId } = req.user;

@@ -5,8 +5,8 @@ const Contacts = mongoose.model("contacts", contactSchema);
 const { HttpError } = require("../httpError");
 
 const getContactsService = async ({
-  limit = 0,
-  page = 0,
+  limit = 20,
+  page = 1,
   favorite = [true, false],
 }) => {
   try {
