@@ -9,35 +9,44 @@ const {
   refreshContact,
   refreshContactStatus,
 } = require("../../controllers/contacts.controller");
-const { validateBody } = require("../../middlewares");
+const { validateBody, validateQuery, auth } = require("../../middlewares");
 const {
   addContactsSchema,
   updateContactsSchema,
   validationSchemaStatus,
 } = require("../../schemas");
-const router = express.Router();
 
-router.get("/", tryCatchWrapper(getContacts));
+const contactRouter = express.Router();
 
-router.get("/:contactId", tryCatchWrapper(getContact));
-
-router.post(
+contactRouter.get(
   "/",
+  auth,
+  validateQuery(validationSchemaStatus),
+  tryCatchWrapper(getContacts),
+);
+
+contactRouter.get("/:contactId", auth, tryCatchWrapper(getContact));
+
+contactRouter.post(
+  "/",
+  auth,
   validateBody(addContactsSchema),
   tryCatchWrapper(createContact),
 );
 
-router.delete("/:contactId", tryCatchWrapper(deleteContact));
+contactRouter.delete("/:contactId", auth, tryCatchWrapper(deleteContact));
 
-router.put(
+contactRouter.put(
   "/:contactId",
+  auth,
   validateBody(updateContactsSchema),
   tryCatchWrapper(refreshContact),
 );
-router.patch(
+contactRouter.patch(
   "/:contactId/favorite",
+  auth,
   validateBody(validationSchemaStatus),
   tryCatchWrapper(refreshContactStatus),
 );
 
-module.exports = router;
+module.exports = contactRouter;
