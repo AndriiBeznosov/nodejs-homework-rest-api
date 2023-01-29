@@ -1,6 +1,9 @@
 const { HttpError } = require("../httpError");
 const jwt = require("jsonwebtoken");
 const { User } = require("../service/schemas/usersSchemas");
+const multer = require("multer");
+const path = require("path");
+const Jimp = require("jimp");
 
 function validateBody(schema) {
   return (req, _, next) => {
@@ -50,8 +53,34 @@ async function auth(req, res, next) {
   next();
 }
 
+const storage = multer.diskStorage({
+  destination: path.join(__dirname, "../tmp"),
+  filename: function (req, file, cb) {
+    const { _id } = req.user;
+    cb(null, _id + "_" + file.originalname);
+  },
+});
+const upload = multer({
+  storage,
+});
+
+async function resizeAvatar(req, res, next) {
+  const { path } = req.file;
+  try {
+    const avatar = await Jimp.read(path);
+    const resizedAvatar = avatar.resize(250, 250);
+    await resizedAvatar.writeAsync(path);
+  } catch (error) {
+    throw new HttpError(error.message, 400);
+  }
+
+  next();
+}
+
 module.exports = {
   validateBody,
   auth,
   validateQuery,
+  upload,
+  resizeAvatar,
 };

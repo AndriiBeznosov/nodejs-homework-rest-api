@@ -1,5 +1,5 @@
 const express = require("express");
-const { tryCatchWrapper } = require("../../helpers/index");
+const { tryCatchWrapper } = require("../helpers/index");
 
 const {
   getContacts,
@@ -8,13 +8,13 @@ const {
   deleteContact,
   refreshContact,
   refreshContactStatus,
-} = require("../../controllers/contacts.controller");
-const { validateBody, validateQuery, auth } = require("../../middlewares");
+} = require("../controllers/contacts.controller");
+const { validateBody, validateQuery, auth } = require("../middlewares");
 const {
   addContactsSchema,
   updateContactsSchema,
   validationSchemaStatus,
-} = require("../../schemas");
+} = require("../schemas");
 
 const contactRouter = express.Router();
 
