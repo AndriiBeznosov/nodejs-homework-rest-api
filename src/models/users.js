@@ -2,13 +2,19 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User } = require("../service/schemas/usersSchemas");
 const { HttpError } = require("../httpError");
+const gravatar = require("gravatar");
 
 async function addUser(email, password) {
   const salt = await bcrypt.genSalt();
   const hashedPassword = await bcrypt.hash(password, salt);
-
+  const avatar = gravatar.url(email);
+  console.log(avatar);
   try {
-    const saveUser = await User.create({ email, password: hashedPassword });
+    const saveUser = await User.create({
+      email,
+      password: hashedPassword,
+      avatarURL: avatar,
+    });
     return saveUser;
   } catch (error) {
     if (error.message.includes("E11000 duplicate key error")) {
@@ -76,10 +82,25 @@ async function updateUser(idUser, subscription) {
   return userUpdate;
 }
 
+async function updateUserAvatar(userId, filename) {
+  const userUpdate = await User.findByIdAndUpdate(
+    userId,
+    { avatarURL: `/avatars/${filename}` },
+    { new: true },
+  );
+
+  if (!userUpdate) {
+    throw new HttpError(401, "Not authorized");
+  }
+
+  return userUpdate;
+}
+
 module.exports = {
   addUser,
   loginUser,
   logoutUser,
   currentUser,
   updateUser,
+  updateUserAvatar,
 };
