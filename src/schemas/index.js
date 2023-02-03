@@ -38,8 +38,16 @@ const loginSchema = Joi.object({
   }),
   password: Joi.string().required(),
 });
+
 const subscriptionSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business").required(),
+});
+
+const loginVerificationSchema = Joi.object({
+  email: Joi.string().email({
+    minDomainSegments: 2,
+    tlds: { allow: ["com", "net", "ua"] },
+  }),
 });
 
 module.exports = {
@@ -49,4 +57,5 @@ module.exports = {
   signupSchema,
   loginSchema,
   subscriptionSchema,
+  loginVerificationSchema,
 };

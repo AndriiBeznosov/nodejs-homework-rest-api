@@ -5,6 +5,8 @@ const {
   logoutUser,
   currentUser,
   updateUser,
+  verificationUser,
+  verificationUserUpdate,
 } = require("../models/users");
 
 async function signup(req, res, _) {
@@ -15,6 +17,19 @@ async function signup(req, res, _) {
   } catch (error) {
     throw new HttpError(error.code, error.message);
   }
+}
+
+async function verification(req, res) {
+  const { verificationToken } = req.params;
+  await verificationUser(verificationToken);
+  res.status(200).json({ message: "Verification successful" });
+}
+
+async function verifyUser(req, res) {
+  const { email } = req.body;
+
+  await verificationUserUpdate(email);
+  res.status(200).json({ message: `Confirmation email sent to ${email}` });
 }
 
 async function login(req, res, _) {
@@ -74,4 +89,6 @@ module.exports = {
   logout,
   current,
   subscription,
+  verification,
+  verifyUser,
 };
