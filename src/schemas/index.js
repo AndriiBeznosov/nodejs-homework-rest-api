@@ -44,10 +44,12 @@ const subscriptionSchema = Joi.object({
 });
 
 const loginVerificationSchema = Joi.object({
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ["com", "net", "ua"] },
-  }),
+  email: Joi.string()
+    .email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net", "ua"] },
+    })
+    .required(),
 });
 
 module.exports = {

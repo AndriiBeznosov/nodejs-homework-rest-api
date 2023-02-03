@@ -10,7 +10,13 @@ const {
   verifyUser,
 } = require("../controllers/users.controller");
 const { uploadAvatar } = require("../controllers/file.controller");
-const { validateBody, auth, upload, resizeAvatar } = require("../middlewares");
+const {
+  validateBody,
+  auth,
+  upload,
+  resizeAvatar,
+  validateEmail,
+} = require("../middlewares");
 const {
   signupSchema,
   loginSchema,
@@ -29,7 +35,7 @@ userRouter.post("/signup", validateBody(signupSchema), tryCatchWrapper(signup));
 userRouter.get("/verify/:verificationToken", tryCatchWrapper(verification));
 userRouter.get(
   "/verify",
-  validateBody(loginVerificationSchema),
+  validateEmail(loginVerificationSchema),
   tryCatchWrapper(verifyUser),
 );
 userRouter.patch("/login", validateBody(loginSchema), tryCatchWrapper(login));
