@@ -1,6 +1,6 @@
 const { HttpError } = require("../httpError");
 const jwt = require("jsonwebtoken");
-const { User } = require("../service/schemas/usersSchemas");
+const { User } = require("../service/schemasMongoose/usersSchemas");
 const multer = require("multer");
 const path = require("path");
 const Jimp = require("jimp");
@@ -71,6 +71,7 @@ const storage = multer.diskStorage({
     cb(null, _id + "_" + file.originalname);
   },
 });
+
 const upload = multer({
   storage,
 });

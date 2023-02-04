@@ -22,7 +22,7 @@ const {
   loginSchema,
   subscriptionSchema,
   loginVerificationSchema,
-} = require("../schemas");
+} = require("../service/schemasJoi");
 
 const userRouter = express.Router();
 userRouter.patch(

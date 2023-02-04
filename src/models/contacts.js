@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { contactSchema } = require("../service/schemas/contactSchemas");
+const { contactSchema } = require("../service/schemasMongoose/contactSchemas");
 
 const Contacts = mongoose.model("contacts", contactSchema);
 const { HttpError } = require("../httpError");

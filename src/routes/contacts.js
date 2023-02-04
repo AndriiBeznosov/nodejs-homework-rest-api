@@ -14,7 +14,7 @@ const {
   addContactsSchema,
   updateContactsSchema,
   validationSchemaStatus,
-} = require("../schemas");
+} = require("../service/schemasJoi");
 
 const contactRouter = express.Router();
 

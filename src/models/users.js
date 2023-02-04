@@ -4,7 +4,7 @@ const gravatar = require("gravatar");
 const sha256 = require("sha256");
 const sgMail = require("@sendgrid/mail");
 
-const { User } = require("../service/schemas/usersSchemas");
+const { User } = require("../service/schemasMongoose/usersSchemas");
 const { HttpError } = require("../httpError");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
