@@ -6,10 +6,23 @@ const {
   logout,
   current,
   subscription,
+  verification,
+  verifyUser,
 } = require("../controllers/users.controller");
 const { uploadAvatar } = require("../controllers/file.controller");
-const { validateBody, auth, upload, resizeAvatar } = require("../middlewares");
-const { signupSchema, loginSchema, subscriptionSchema } = require("../schemas");
+const {
+  validateBody,
+  auth,
+  upload,
+  resizeAvatar,
+  validateEmail,
+} = require("../middlewares");
+const {
+  signupSchema,
+  loginSchema,
+  subscriptionSchema,
+  loginVerificationSchema,
+} = require("../schemas");
 
 const userRouter = express.Router();
 userRouter.patch(
@@ -19,9 +32,16 @@ userRouter.patch(
   tryCatchWrapper(subscription),
 );
 userRouter.post("/signup", validateBody(signupSchema), tryCatchWrapper(signup));
+userRouter.get("/verify/:verificationToken", tryCatchWrapper(verification));
+userRouter.get(
+  "/verify",
+  validateEmail(loginVerificationSchema),
+  tryCatchWrapper(verifyUser),
+);
 userRouter.patch("/login", validateBody(loginSchema), tryCatchWrapper(login));
 userRouter.get("/current", tryCatchWrapper(auth), tryCatchWrapper(current));
 userRouter.get("/logout", tryCatchWrapper(auth), tryCatchWrapper(logout));
+
 userRouter.patch(
   "/avatars",
   tryCatchWrapper(auth),

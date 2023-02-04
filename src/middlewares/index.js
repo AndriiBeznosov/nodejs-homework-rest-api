@@ -14,6 +14,17 @@ function validateBody(schema) {
     return next();
   };
 }
+
+function validateEmail(schema) {
+  return (req, _, next) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      throw new HttpError("missing required field email", 400);
+    }
+    return next();
+  };
+}
+
 function validateQuery(schema) {
   return (req, _, next) => {
     if (Object.keys(req.query).includes("favorite")) {
@@ -83,4 +94,5 @@ module.exports = {
   validateQuery,
   upload,
   resizeAvatar,
+  validateEmail,
 };
